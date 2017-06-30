@@ -1,0 +1,19 @@
+{
+  "name": "styled-elm",
+  "version": "1.0.0",
+  "description": "This project is bootstrapped with [Create Elm App](https://github.com/halfzebra/create-elm-app).",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "css": "./node_modules/.bin/elm-css --pathToMake ./node_modules/.bin/elm-make -o ./src ./src/Stylesheets.elm"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "elm": "^0.18.0",
+    "elm-css": "^0.6.1"
+  }
+}
