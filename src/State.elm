@@ -40,6 +40,9 @@ update msg model =
         Decrement ->
             ( { model | click = model.click - 1 }, Cmd.none )
 
+        Route ->
+            ( model, Cmd.none )
+
 
 init : ( Types.Model, Cmd Types.Msg )
 init =

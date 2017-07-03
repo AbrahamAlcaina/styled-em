@@ -1,6 +1,7 @@
 module Types exposing (..)
 
 import Time exposing (..)
+import Router.Types exposing (Route)
 
 
 type alias Model =
@@ -14,3 +15,4 @@ type Msg
     | Increment
     | Decrement
     | SaveModelTick Time
+    | Route
