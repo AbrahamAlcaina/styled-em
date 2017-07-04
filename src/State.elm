@@ -30,12 +30,12 @@ update msg model =
                 Err msg ->
                     let
                         x =
-                            Debug.log "BOOM" msg
+                            Debug.log "Not saved state" msg
                     in
-                        ( { model | click = 99 }, Cmd.none )
+                        ( model, Cmd.none )
 
                 Ok val ->
-                    ( { model | click = val.click }, Cmd.none )
+                    ( val, Routing.modifyUrl val.currentRoute )
 
         SaveModel ->
             ( model, encoder model |> Ports.save )
