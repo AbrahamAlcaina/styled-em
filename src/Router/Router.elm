@@ -25,6 +25,9 @@ routeToString route =
 
                 Route.Dresses ->
                     "/dresses"
+
+                Route.NotFoundRoute ->
+                    "/notfound"
     in
         "#" ++ hasPage
 
@@ -39,9 +42,18 @@ modifyUrl =
     routeToString >> Navigation.modifyUrl
 
 
-fromLocation : Location -> Maybe Route
+fromLocation : Location -> Route
 fromLocation location =
     if String.isEmpty location.hash then
-        Just Route.Home
+        Route.Home
     else
-        parseHash route location
+        let
+            r =
+                parseHash route location
+        in
+            case r of
+                Just route ->
+                    route
+
+                Nothing ->
+                    Route.NotFoundRoute

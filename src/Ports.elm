@@ -1,9 +1,9 @@
 port module Ports exposing (..)
 
-import Types exposing (Model)
+import Json.Encode
 
 
-port save : Model -> Cmd msg
+port save : Json.Encode.Value -> Cmd msg
 
 
 port load : (String -> msg) -> Sub msg

@@ -1,11 +1,14 @@
 module Types exposing (..)
 
 import Time exposing (..)
-import Router.Types exposing (Route)
+import Router.Types as Routing
+import Navigation
+import Json.Decode
 
 
 type alias Model =
     { click : Int
+    , currentRoute : Routing.Route
     }
 
 
@@ -15,4 +18,4 @@ type Msg
     | Increment
     | Decrement
     | SaveModelTick Time
-    | Route
+    | UrlChange Navigation.Location
