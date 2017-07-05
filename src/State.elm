@@ -7,6 +7,10 @@ import Types exposing (..)
 import Api exposing (decoder, encoder)
 import Ports exposing (load, doload)
 import Router.Router as Routing
+import Router.Types as Routing
+import Home.State as HomeState
+import Dresses.State as DressesState
+import NotFound.State as NotFoundState
 
 
 subscriptions : Types.Model -> Sub Msg
@@ -19,7 +23,7 @@ subscriptions model =
         ]
 
 
-update : Msg -> Types.Model -> ( Types.Model, Cmd Msg )
+update : Types.Msg -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update msg model =
     case msg of
         SaveModelTick _ ->
@@ -40,24 +44,50 @@ update msg model =
         SaveModel ->
             ( model, encoder model |> Ports.save )
 
-        Increment ->
-            ( { model | click = model.click + 1 }, Cmd.none )
-
-        Decrement ->
-            ( { model | click = model.click - 1 }, Cmd.none )
-
         UrlChange route ->
             ( { model | currentRoute = Routing.fromLocation route }, Cmd.none )
 
+        HomeMsg msg ->
+            ( model, Cmd.none )
 
-init : Location -> ( Model, Cmd Msg )
+        DressesMsg msg ->
+            ( model, Cmd.none )
+
+        NotFoundMsg msg ->
+            ( model, Cmd.none )
+
+
+init : Location -> ( Types.Model, Cmd Msg )
 init location =
     let
-        route =
-            Routing.fromLocation location
+        -- TODO Review how to load the default page
+        home =
+            Home { title = "home" }
     in
-        ( { click = 0
-          , currentRoute = route
+        ( { currentRoute = Routing.fromLocation location
+          , pageState =
+                Loaded home
+                {--
+            , homeState : HomeState.init
+            , dressesState : DressesState.init
+            , notFoundState : NotFoundState.init
+            --}
           }
         , Ports.doload ()
         )
+
+
+setRoute : Routing.Route -> Model -> ( Model, Cmd Msg )
+setRoute route model =
+    case route of
+        Routing.HomeRoute ->
+            --( { model | pageState = model.homeState }, Cmd.none )
+            ( model, Cmd.none )
+
+        Routing.DressesRoute ->
+            --( { model | pageState = model.dressesState }, Cmd.none )
+            ( model, Cmd.none )
+
+        Routing.NotFoundRoute ->
+            --( { model | pageState = model.notFoundState }, Cmd.none )
+            ( model, Cmd.none )

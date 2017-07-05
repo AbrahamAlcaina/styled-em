@@ -2,6 +2,6 @@ module Router.Types exposing (..)
 
 
 type Route
-    = Home
-    | Dresses
+    = HomeRoute
+    | DressesRoute
     | NotFoundRoute

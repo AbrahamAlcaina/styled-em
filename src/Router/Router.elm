@@ -10,8 +10,8 @@ import Router.Types as Route exposing (Route)
 route : Url.Parser (Route -> a) a
 route =
     Url.oneOf
-        [ Url.map Route.Home (Url.top)
-        , Url.map Route.Dresses (Url.s "dresses")
+        [ Url.map Route.HomeRoute (Url.top)
+        , Url.map Route.DressesRoute (Url.s "dresses")
         ]
 
 
@@ -20,10 +20,10 @@ routeToString route =
     let
         hasPage =
             case route of
-                Route.Home ->
+                Route.HomeRoute ->
                     "/"
 
-                Route.Dresses ->
+                Route.DressesRoute ->
                     "/dresses"
 
                 Route.NotFoundRoute ->
@@ -45,7 +45,7 @@ modifyUrl =
 fromLocation : Location -> Route
 fromLocation location =
     if String.isEmpty location.hash then
-        Route.Home
+        Route.HomeRoute
     else
         let
             r =

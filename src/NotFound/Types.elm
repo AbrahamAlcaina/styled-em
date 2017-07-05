@@ -1,4 +1,4 @@
-module Dresses.Types exposing (Model, Msg)
+module NotFound.Types exposing (Model, Msg)
 
 
 type alias Model =

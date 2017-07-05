@@ -1,6 +1,6 @@
-module Home.Api exposing (encoder, decoder)
+module NotFound.Api exposing (encoder, decoder)
 
-import Home.Types as Types
+import NotFound.Types as Types
 import Json.Decode exposing (Decoder, int, string, fail, andThen, succeed)
 import Json.Decode.Pipeline exposing (required, decode, custom)
 import Json.Encode
