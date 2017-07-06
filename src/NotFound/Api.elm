@@ -1,8 +1,8 @@
 module NotFound.Api exposing (encoder, decoder)
 
 import NotFound.Types as Types
-import Json.Decode exposing (Decoder, int, string, fail, andThen, succeed)
-import Json.Decode.Pipeline exposing (required, decode, custom)
+import Json.Decode exposing (Decoder, string)
+import Json.Decode.Pipeline exposing (required, decode)
 import Json.Encode
 
 

@@ -2,26 +2,28 @@ module View exposing (view)
 
 import Dresses.View
 import Home.View
-import Html exposing (Html, a, br, button, div, text)
+import Html exposing (Html, a, br, button, div, text, ul, li)
 import NotFound.View
 import Router.Router exposing (href)
 import Router.Types exposing (Route(..))
 import Types exposing (Page(..), Msg(..), PageState(..))
+import Translation.View as Translations
 
 
 viewLink : String -> Route -> Html msg
 viewLink name route =
-    a [ href route ] [ text name ]
+    li [] [ a [ href route ] [ text name ] ]
 
 
 view : Types.Model -> Html Types.Msg
 view model =
     div []
         [ div []
-            [ text "menu"
-            , viewLink "home" HomeRoute
-            , viewLink "dresses" DressesRoute
-            , viewLink "notfound" NotFoundRoute
+            [ ul []
+                [ viewLink Translations.menuHome HomeRoute
+                , viewLink Translations.menuDresses DressesRoute
+                , viewLink Translations.menuNotFound NotFoundRoute
+                ]
             ]
         , viewPage <| getPage model.pageState
         ]

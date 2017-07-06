@@ -8,12 +8,19 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "css": "./node_modules/.bin/elm-css --pathToMake ./node_modules/.bin/elm-make -o ./src ./src/Stylesheets.elm"
+    "css": "./node_modules/.bin/elm-css --pathToMake ./node_modules/.bin/elm-make -o ./src ./src/Stylesheets.elm",
+    "i18n-switch-es" : "./node_modules/.bin/elm-i18n-switch -l es",
+    "i18n-switch-en" : "./node_modules/.bin/elm-i18n-switch -l en",
+    "i18n-export-es" : "./node_modules/.bin/elm-i18n-generator --format CSV --language es --root translation --export",
+    "i18n-export-en" : "./node_modules/.bin/elm-i18n-generator --format CSV --language en --root translation --export",
+    "i18n-import-es" : "./node_modules/.bin/elm-i18n-generator --format CSV --language es --root false --importOutput translation --import export.csv && mv",    
+    "i18n-import-en" : "./node_modules/.bin/elm-i18n-generator --format CSV --language en --root false --importOutput translation --import export.csv"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "elm": "^0.18.0",
-    "elm-css": "^0.6.1"
+    "elm-css": "^0.6.1",
+    "elm-i18n": "^1.0.0"
   }
 }
