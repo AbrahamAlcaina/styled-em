@@ -1,8 +1,9 @@
 module NotFound.State exposing (init)
 
-import Dresses.Types exposing (Model)
+import NotFound.Types exposing (Model)
+import Translation.NotFound.State as Translations
 
 
 init : Model
 init =
-    Model "Not found"
+    Model Translations.title

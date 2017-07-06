@@ -1,8 +1,9 @@
 module Home.State exposing (init)
 
-import Dresses.Types exposing (Model)
+import Home.Types exposing (Model)
+import Translation.Home.State as Translations
 
 
 init : Model
 init =
-    Model "Home"
+    Model Translations.title
