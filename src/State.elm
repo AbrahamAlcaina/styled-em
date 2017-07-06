@@ -1,10 +1,16 @@
 module State exposing (update, subscriptions, init)
 
 import Json.Decode exposing (decodeString)
+import Navigation exposing (Location)
 import Time
 import Types exposing (..)
-import Api exposing (decoder)
+import Api exposing (decoder, encoder)
 import Ports exposing (load, doload)
+import Router.Router as Routing
+import Router.Types as RoutingType
+import Home.State as HomeState
+import Dresses.State as DressesState
+import NotFound.State as NotFoundState
 
 
 subscriptions : Types.Model -> Sub Msg
@@ -17,33 +23,95 @@ subscriptions model =
         ]
 
 
-update : Msg -> Types.Model -> ( Types.Model, Cmd Msg )
+update : Types.Msg -> Types.Model -> ( Types.Model, Cmd Types.Msg )
 update msg model =
     case msg of
         SaveModelTick _ ->
-            ( model, Ports.save model )
+            ( model, encoder model |> Ports.save )
 
         LoadModel value ->
             case decodeString Api.decoder value of
                 Err msg ->
-                    ( { model | click = 99 }, Cmd.none )
+                    let
+                        x =
+                            Debug.log "Not saved state" msg
+                    in
+                        ( model, Cmd.none )
 
                 Ok val ->
-                    ( { model | click = val.click }, Cmd.none )
+                    ( val, Routing.modifyUrl val.currentRoute )
 
         SaveModel ->
-            ( model, Ports.save model )
+            ( model, encoder model |> Ports.save )
 
-        Increment ->
-            ( { model | click = model.click + 1 }, Cmd.none )
+        UrlChange location ->
+            Routing.fromLocation location |> setRoute model
 
-        Decrement ->
-            ( { model | click = model.click - 1 }, Cmd.none )
+        HomeMsg msg ->
+            ( model, Cmd.none )
+
+        DressesMsg msg ->
+            ( model, Cmd.none )
+
+        NotFoundMsg msg ->
+            ( model, Cmd.none )
 
 
-init : ( Types.Model, Cmd Types.Msg )
-init =
-    ( { click = 0
-      }
-    , Ports.doload ()
-    )
+init : Location -> ( Types.Model, Cmd Msg )
+init location =
+    let
+        home =
+            HomeState.init
+    in
+        ( { currentRoute = Routing.fromLocation location
+          , pageState = Loaded <| Types.Home home
+          , homeState = home
+          , dressesState = DressesState.init
+          , notFoundState = NotFoundState.init
+          }
+        , Ports.doload ()
+        )
+
+
+setRoute : Types.Model -> RoutingType.Route -> ( Types.Model, Cmd Msg )
+setRoute model route =
+    let
+        newModel =
+            model
+                |> saveOldPageState
+                |> setCurrentState route
+    in
+        ( newModel, encoder newModel |> Ports.save )
+
+
+saveOldPageState : Types.Model -> Types.Model
+saveOldPageState model =
+    case model.pageState of
+        Types.Loaded (Types.Home submodel) ->
+            { model | homeState = submodel }
+
+        Types.Loaded (Types.Dresses submodel) ->
+            { model | dressesState = submodel }
+
+        Types.Loaded (Types.NotFound submodel) ->
+            { model | notFoundState = submodel }
+
+        Types.TransitioningFrom _ ->
+            model
+
+
+setCurrentState : RoutingType.Route -> Types.Model -> Types.Model
+setCurrentState route model =
+    let
+        page =
+            case route of
+                RoutingType.HomeRoute ->
+                    Home model.homeState
+
+                RoutingType.DressesRoute ->
+                    Dresses model.dressesState
+
+                RoutingType.NotFoundRoute ->
+                    NotFound model.notFoundState
+    in
+        { model | currentRoute = route, pageState = Loaded page }

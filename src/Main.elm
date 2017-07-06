@@ -1,14 +1,14 @@
 module Main exposing (..)
 
-import Html exposing (Html)
 import View exposing (view)
 import State exposing (update)
-import Types
+import Types exposing (..)
+import Navigation exposing (Location)
+import Router.Router exposing (fromLocation)
 
 
-main : Program Never Types.Model Types.Msg
 main =
-    Html.program
+    Navigation.program UrlChange
         { view = view
         , init = State.init
         , update = State.update
