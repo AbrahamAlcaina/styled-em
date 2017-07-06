@@ -1,5 +1,7 @@
 import './main.css';
+import './Styles/material-kit.scss'
 import { Main } from './Main.elm';
+
 
 const app = Main.embed(document.getElementById('root'));
 const storageKey = 'styled';
