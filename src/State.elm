@@ -60,13 +60,12 @@ update msg model =
 init : Location -> ( Types.Model, Cmd Msg )
 init location =
     let
-        -- TODO Review how to load the default page
         home =
-            Home { title = "home" }
+            HomeState.init
     in
         ( { currentRoute = Routing.fromLocation location
-          , pageState = Loaded home
-          , homeState = HomeState.init
+          , pageState = Loaded <| Types.Home home
+          , homeState = home
           , dressesState = DressesState.init
           , notFoundState = NotFoundState.init
           }
