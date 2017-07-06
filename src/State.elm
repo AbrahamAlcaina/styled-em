@@ -7,7 +7,7 @@ import Types exposing (..)
 import Api exposing (decoder, encoder)
 import Ports exposing (load, doload)
 import Router.Router as Routing
-import Router.Types as Routing
+import Router.Types as RoutingType
 import Home.State as HomeState
 import Dresses.State as DressesState
 import NotFound.State as NotFoundState
@@ -44,8 +44,8 @@ update msg model =
         SaveModel ->
             ( model, encoder model |> Ports.save )
 
-        UrlChange route ->
-            ( { model | currentRoute = Routing.fromLocation route }, Cmd.none )
+        UrlChange location ->
+            Routing.fromLocation location |> setRoute model
 
         HomeMsg msg ->
             ( model, Cmd.none )
@@ -65,29 +65,54 @@ init location =
             Home { title = "home" }
     in
         ( { currentRoute = Routing.fromLocation location
-          , pageState =
-                Loaded home
-                {--
-            , homeState : HomeState.init
-            , dressesState : DressesState.init
-            , notFoundState : NotFoundState.init
-            --}
+          , pageState = Loaded home
+          , homeState = HomeState.init
+          , dressesState = DressesState.init
+          , notFoundState = NotFoundState.init
           }
         , Ports.doload ()
         )
 
 
-setRoute : Routing.Route -> Model -> ( Model, Cmd Msg )
-setRoute route model =
-    case route of
-        Routing.HomeRoute ->
-            --( { model | pageState = model.homeState }, Cmd.none )
-            ( model, Cmd.none )
+setRoute : Types.Model -> RoutingType.Route -> ( Types.Model, Cmd Msg )
+setRoute model route =
+    let
+        newModel =
+            model
+                |> saveOldPageState
+                |> setCurrentState route
+    in
+        ( newModel, encoder newModel |> Ports.save )
 
-        Routing.DressesRoute ->
-            --( { model | pageState = model.dressesState }, Cmd.none )
-            ( model, Cmd.none )
 
-        Routing.NotFoundRoute ->
-            --( { model | pageState = model.notFoundState }, Cmd.none )
-            ( model, Cmd.none )
+saveOldPageState : Types.Model -> Types.Model
+saveOldPageState model =
+    case model.pageState of
+        Types.Loaded (Types.Home submodel) ->
+            { model | homeState = submodel }
+
+        Types.Loaded (Types.Dresses submodel) ->
+            { model | dressesState = submodel }
+
+        Types.Loaded (Types.NotFound submodel) ->
+            { model | notFoundState = submodel }
+
+        Types.TransitioningFrom _ ->
+            model
+
+
+setCurrentState : RoutingType.Route -> Types.Model -> Types.Model
+setCurrentState route model =
+    let
+        page =
+            case route of
+                RoutingType.HomeRoute ->
+                    Home model.homeState
+
+                RoutingType.DressesRoute ->
+                    Dresses model.dressesState
+
+                RoutingType.NotFoundRoute ->
+                    NotFound model.notFoundState
+    in
+        { model | currentRoute = route, pageState = Loaded page }

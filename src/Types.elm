@@ -21,13 +21,10 @@ type PageState
 
 type alias Model =
     { currentRoute : Routing.Route
-    , pageState :
-        PageState
-        {--
+    , pageState : PageState
     , homeState : Home.Model
     , dressesState : Dresses.Model
     , notFoundState : NotFound.Model
-    --}
     }
 
 

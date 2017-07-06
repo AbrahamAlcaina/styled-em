@@ -15,6 +15,9 @@ decoder =
     decode Types.Model
         |> required "route" routerDecoder
         |> required "pageState" pageStateDecoder
+        |> required "homeState" HomeApi.decoder
+        |> required "dressesState" DressesApi.decoder
+        |> required "notFoundState" NotFoundApi.decoder
 
 
 encoder : Types.Model -> Json.Encode.Value
@@ -22,6 +25,9 @@ encoder model =
     Json.Encode.object
         [ ( "route", routerEncoder model.currentRoute )
         , ( "pageState", pageStateEncoder model.pageState )
+        , ( "homeState", HomeApi.encoder model.homeState )
+        , ( "dressesState", DressesApi.encoder model.dressesState )
+        , ( "notFoundState", NotFoundApi.encoder model.notFoundState )
         ]
 
 
