@@ -2,7 +2,8 @@ module View exposing (view)
 
 import Dresses.View
 import Home.View
-import Html exposing (Html, a, br, button, div, text, ul, li)
+import Html exposing (Html, a, br, button, div, text, ul, li, nav, span)
+import Html.Attributes exposing (class, attribute, id)
 import NotFound.View
 import Router.Router exposing (href)
 import Router.Types exposing (Route(..))
@@ -18,11 +19,26 @@ viewLink name route =
 view : Types.Model -> Html Types.Msg
 view model =
     div []
-        [ div []
-            [ ul []
-                [ viewLink Translations.menuHome HomeRoute
-                , viewLink Translations.menuDresses DressesRoute
-                , viewLink Translations.menuNotFound NotFoundRoute
+        [ nav [ class "navbar navbar" ]
+            [ div [ class "container" ]
+                [ div [ class "navbar-hader" ]
+                    [ button [ attribute "type" "button", class "navbar-toggle", attribute "data-toggle" "collapse", attribute "data-target" "#navigation-index" ]
+                        [ span [ class "sr-only" ] [ text "toggle" ]
+                        , span [ class "icon-bar" ] []
+                        , span [ class "icon-bar" ] []
+                        , span [ class "icon-bar" ] []
+                        ]
+                    , div [ class "logo-container" ]
+                        [ div [ class "brand" ] [ text "Style-elm" ]
+                        ]
+                    ]
+                , div [ class "collapse navbar-collapse", id "navigation-index" ]
+                    [ ul [ class "nav navbar-nav" ]
+                        [ viewLink Translations.menuHome HomeRoute
+                        , viewLink Translations.menuDresses DressesRoute
+                        , viewLink Translations.menuNotFound NotFoundRoute
+                        ]
+                    ]
                 ]
             ]
         , viewPage <| getPage model.pageState

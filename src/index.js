@@ -1,4 +1,3 @@
-import './main.css';
 import './Styles/material-kit.scss'
 import { Main } from './Main.elm';
 
