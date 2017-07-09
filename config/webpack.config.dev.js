@@ -28,17 +28,6 @@ module.exports = {
     require.resolve('webpack/hot/dev-server'),
 
     paths.appIndexJs
-
-    // MK
-    //paths.appLib('bootstrap.min.js'),
-    //paths.appLib('material.min.js'),
-    //paths.appLib('moment.min.js'),
-    //paths.appLib('nouislider.min.js'),
-    //paths.appLib('bootstrap-datetimepicker.js'),
-    //paths.appLib('bootstrap-selectpicker.js'),
-    //paths.appLib('jasny-bootstrap.min.js'),
-    //paths.appLib('atv-img-animation.js'),
-    //paths.appLib('material-kit.js')
   ],
 
   output: {
