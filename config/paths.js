@@ -37,12 +37,18 @@ function getServedPath(appPackageJson) {
   return ensureSlash(servedUrl, true);
 }
 
+function libFile (file) {
+    return resolveApp(`./lib/${file}`);
+}
+
 module.exports = {
   appPath: resolveApp('.'),
   appPublic: resolveApp('./public'),
+  appLib: libFile,
   appHtml: resolveApp('./public/index.html'),
   appIndexJs: resolveApp('./src/index.js'),
   appSrc: resolveApp('./src'),
+  appSass: resolveApp('./src/styles'),
   entry: resolveApp('./src/index.js'),
   appBuild: resolveApp('./build'),
   elmPackageJson: resolveApp('./elm-package.json'),

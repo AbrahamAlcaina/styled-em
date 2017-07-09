@@ -8,6 +8,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const getClientEnvironment = require('./env');
 const paths = require('../config/paths');
+const webpack = require('webpack');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -16,7 +17,6 @@ const publicPath = '/';
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
 // Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
 const publicUrl = '';
-
 module.exports = {
   devtool: 'eval',
 
@@ -28,6 +28,17 @@ module.exports = {
     require.resolve('webpack/hot/dev-server'),
 
     paths.appIndexJs
+
+    // MK
+    //paths.appLib('bootstrap.min.js'),
+    //paths.appLib('material.min.js'),
+    //paths.appLib('moment.min.js'),
+    //paths.appLib('nouislider.min.js'),
+    //paths.appLib('bootstrap-datetimepicker.js'),
+    //paths.appLib('bootstrap-selectpicker.js'),
+    //paths.appLib('jasny-bootstrap.min.js'),
+    //paths.appLib('atv-img-animation.js'),
+    //paths.appLib('material-kit.js')
   ],
 
   output: {
@@ -99,15 +110,18 @@ module.exports = {
 
       {
         test: /\.scss$/,
-        include: [
-          paths.appSrc +"/Styles"
-        ],
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ]
-      }, 
+        include: [paths.appSass],
+        use: [{
+                loader: 'style-loader'
+            }, {
+                loader: 'css-loader'
+            }, {
+                loader: 'sass-loader',
+                options: {
+                    includePaths: [paths.appSass, require('path').resolve(__dirname, "../src/Style")]
+                }
+            }]
+      },
 
       // "postcss" loader applies autoprefixer to our CSS.
       // "css" loader resolves paths in CSS and adds assets as dependencies.
@@ -161,6 +175,10 @@ module.exports = {
         }
       }
     ]
+  },
+
+  externals: {
+    jquery: 'jQuery'
   },
 
   plugins: [

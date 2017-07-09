@@ -1,5 +1,6 @@
-import './Styles/material-kit.scss'
+require('!style-loader!css-loader!sass-loader!../public/sass/material-kit.scss');
 import { Main } from './Main.elm';
+
 
 
 const app = Main.embed(document.getElementById('root'));

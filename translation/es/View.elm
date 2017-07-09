@@ -1,13 +1,6 @@
 module Translation.View exposing (..)
 
 
-menuHome =
-    "Incio"
-
-
-menuDresses =
-    "Vestidos"
-
-
-menuNotFound =
-    "Url no encontrada"
+name : String
+name =
+    "Styled elm"

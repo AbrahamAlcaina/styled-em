@@ -4,9 +4,8 @@ import View exposing (view)
 import State exposing (update)
 import Types exposing (..)
 import Navigation exposing (Location)
-import Router.Router exposing (fromLocation)
 
-
+main : Program Never Model Msg
 main =
     Navigation.program UrlChange
         { view = view
